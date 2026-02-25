@@ -1,42 +1,43 @@
-# sv
+# Sveltekit protool example
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Setup
 
-## Creating a project
+Make sure to install dependencies:
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
+```bash
+bun install
 ```
 
-To recreate this project with the same configuration:
+## Setup db
 
-```sh
-# recreate this project
-bun x sv create --template minimal --types ts --add prettier eslint tailwindcss="plugins:none" drizzle="database:sqlite+sqlite:better-sqlite3" better-auth="demo:github" --install bun sveltekit
+Push the schema to the database:
+
+```bash
+bun run db:push
 ```
 
-## Developing
+## Seed the database
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Setup .env file
 
-```sh
-npm run dev
+## Development Server
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+Start the development server on `http://localhost:5173`:
+
+```bash
+bun run dev
 ```
 
-## Building
+## Production
 
-To create a production version of your app:
+Build the application for production:
 
-```sh
-npm run build
+```bash
+bun run build
 ```
 
-You can preview the production build with `npm run preview`.
+Locally preview production build:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```bash
+bun run preview
+```
