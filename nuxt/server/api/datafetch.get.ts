@@ -1,15 +1,18 @@
 import { faker } from "@faker-js/faker";
 
-export interface UserData {
+export type UserData = {
 	name: string;
 	email: string;
 	age: number;
 	phone: string;
 	address: string;
-}
+};
 
 export default defineEventHandler(async (): Promise<UserData> => {
 	await new Promise((resolve) => setTimeout(resolve, 2000));
+
+	//const data = await db.select().from(usersTable);
+	//console.log(data);
 
 	return {
 		name: faker.person.fullName(),
