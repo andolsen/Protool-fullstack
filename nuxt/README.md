@@ -18,6 +18,8 @@ bun run db:push
 
 ## Seed the database
 
+## Setup .env file
+
 ## Development Server
 
 Start the development server on `http://localhost:3000`:
