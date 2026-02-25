@@ -1,6 +1,6 @@
+import auth from "../auth/auth";
 import db from "../db";
 import { usersTable } from "../db/schema/schema";
-import auth from "../lib/auth";
 
 export type dbCall = {
 	name: string;

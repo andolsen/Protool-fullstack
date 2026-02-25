@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { signIn, signOut, useSession } from "@/server/lib/auth-client";
+import { signIn, signOut, useSession } from "@/server/auth/auth-client";
 
 const session = useSession();
 const user = computed(() => session.value.data?.user);
