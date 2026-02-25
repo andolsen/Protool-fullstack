@@ -1,6 +1,7 @@
 <script lang="ts">
 	import LinkComponent from '$components/LinkComponent.svelte';
 	import { submitFormData } from './data.remote';
+	import { inputSchema } from './schema';
 </script>
 
 <div class="absolute top-5 left-3">
@@ -10,7 +11,10 @@
 	<div class="flex min-h-full flex-col items-center justify-center py-10">
 		<h1 class="text-center text-4xl font-bold text-orange-400">Form</h1>
 
-		<form {...submitFormData} class="m-5 flex w-full max-w-md flex-col gap-4 text-white">
+		<form
+			{...submitFormData.preflight(inputSchema)}
+			class="m-5 flex w-full max-w-md flex-col gap-4 text-white"
+		>
 			<div class="flex flex-col gap-1">
 				<input
 					{...submitFormData.fields.name.as('text')}

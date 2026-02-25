@@ -15,7 +15,7 @@
 		{#if query.loading}
 			<div class="m-5 text-white">Loading...</div>
 		{:else if query.error}
-			<div class="m-5 text-white">Error: {query.error.message}</div>
+			<pre class="m-5 text-white">Error: {query.error.status} - {query.error.message}</pre>
 		{:else}
 			<div class="m-5 text-white">
 				<h2>Name: {query.current?.name}</h2>
