@@ -1,13 +1,10 @@
-# Nuxt Minimal Starter
-
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# Nuxt protool example
 
 ## Setup
 
 Make sure to install dependencies:
 
 ```bash
-# bun
 bun install
 ```
 
@@ -16,7 +13,6 @@ bun install
 Push the schema to the database:
 
 ```bash
-# bun
 bun run db:push
 ```
 
@@ -27,7 +23,6 @@ bun run db:push
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# bun
 bun run dev
 ```
 
@@ -36,7 +31,6 @@ bun run dev
 Build the application for production:
 
 ```bash
-# bun
 bun run build
 ```
 
