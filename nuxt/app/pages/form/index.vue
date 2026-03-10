@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type z from "zod";
+import * as v from "valibot";
 import type { FormResponse, inputSchema } from "~~/server/api/submit-form.post";
 
-const form = ref<z.infer<typeof inputSchema>>({
+const form = ref<v.InferInput<typeof inputSchema>>({
 	name: "",
 	email: "",
 	age: 0,
@@ -28,7 +28,7 @@ const handleSubmit = async () => {
 
 	try {
 		// Nuxt 4 $fetch is typesafe based on the server/api/submit-form.post.ts definition
-		const response = await $fetch<FormResponse>("/api/submit-form", {
+		const response = await $fetch("/api/submit-form", {
 			method: "POST",
 			body: form.value,
 		});
