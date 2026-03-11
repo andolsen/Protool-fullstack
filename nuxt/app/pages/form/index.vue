@@ -2,47 +2,7 @@
 import { inputSchema } from "@/server/api/schemas/formSchema";
 import { useForm } from "@tanstack/vue-form";
 
-function getServerErrorMessage(error: unknown) {
-	if (
-		typeof error === "object" &&
-		error !== null &&
-		"data" in error &&
-		typeof error.data === "object" &&
-		error.data !== null &&
-		"message" in error.data &&
-		typeof error.data.message === "string"
-	) {
-		return error.data.message;
-	}
-
-	if (error instanceof Error) {
-		return error.message;
-	}
-
-	return "Something went wrong while submitting the form.";
-}
-
-function getFormErrorMessage(error: unknown) {
-	if (typeof error === "string") {
-		return error;
-	}
-
-	if (error && typeof error === "object") {
-		const issuesByField = Object.values(
-			error as Record<string, Array<{ message?: string }>>,
-		);
-
-		for (const issues of issuesByField) {
-			const firstIssue = issues?.[0];
-
-			if (firstIssue?.message) {
-				return firstIssue.message;
-			}
-		}
-	}
-
-	return null;
-}
+let formError = ref<boolean>(false);
 
 const form = useForm({
 	defaultValues: {
@@ -56,11 +16,7 @@ const form = useForm({
 		onSubmit: inputSchema,
 	},
 	onSubmit: async ({ value }) => {
-		formResponse.value = null;
-		form.setErrorMap({
-			onSubmit: undefined,
-		});
-
+		formError.value = false;
 		try {
 			const response = await $fetch("/api/submit-form", {
 				method: "POST",
@@ -68,12 +24,7 @@ const form = useForm({
 			});
 			formResponse.value = response.data;
 		} catch (error) {
-			form.setErrorMap({
-				onSubmit: {
-					form: getServerErrorMessage(error),
-					fields: {},
-				},
-			});
+			formError.value = true;
 		}
 	},
 });
@@ -103,124 +54,138 @@ let formResponse = ref<{
 			>
 				<form.Field name="name" class="flex flex-col gap-1">
 					<template v-slot="{ field, state }">
-						<input
-							:id="field.name"
-							:name="field.name"
-							:value="field.state.value"
-							@input="
-								(e) => field.handleChange((e.target as HTMLInputElement).value)
-							"
-							type="text"
-							placeholder="Name"
-							class="p-2 bg-zinc-700 rounded border"
-							:class="
-								state.meta.errors.length > 0
-									? 'border-red-500'
-									: 'border-transparent'
-							"
-						/>
-						<FieldInfo :state="state" />
+						<div class="flex flex-col gap-1">
+							<input
+								:id="field.name"
+								:name="field.name"
+								:value="field.state.value"
+								@input="
+									(e) =>
+										field.handleChange((e.target as HTMLInputElement).value)
+								"
+								type="text"
+								placeholder="Name"
+								class="p-2 bg-zinc-700 rounded border"
+								:class="
+									state.meta.errors.length > 0
+										? 'border-red-500'
+										: 'border-transparent'
+								"
+							/>
+							<FieldInfo :state="state" />
+						</div>
 					</template>
 				</form.Field>
 
 				<form.Field name="email" class="flex flex-col gap-1">
 					<template v-slot="{ field, state }">
-						<input
-							:id="field.name"
-							:name="field.name"
-							:value="field.state.value"
-							@input="
-								(e) => field.handleChange((e.target as HTMLInputElement).value)
-							"
-							type="email"
-							placeholder="Email"
-							class="p-2 bg-zinc-700 rounded border"
-							:class="
-								state.meta.errors.length > 0
-									? 'border-red-500'
-									: 'border-transparent'
-							"
-						/>
-						<FieldInfo :state="state" />
+						<div class="flex flex-col gap-1">
+							<input
+								:id="field.name"
+								:name="field.name"
+								:value="field.state.value"
+								@input="
+									(e) =>
+										field.handleChange((e.target as HTMLInputElement).value)
+								"
+								type="email"
+								placeholder="Email"
+								class="p-2 bg-zinc-700 rounded border"
+								:class="
+									state.meta.errors.length > 0
+										? 'border-red-500'
+										: 'border-transparent'
+								"
+							/>
+							<FieldInfo :state="state" />
+						</div>
 					</template>
 				</form.Field>
 
-				<form.Field name="age" class="flex flex-col gap-1">
+				<form.Field name="age">
 					<template v-slot="{ field, state }">
-						<input
-							:id="field.name"
-							:name="field.name"
-							:value="field.state.value"
-							@input="
-								(e) =>
-									field.handleChange(
-										Number((e.target as HTMLInputElement).value),
-									)
-							"
-							type="number"
-							placeholder="Age"
-							class="p-2 bg-zinc-700 rounded border"
-							:class="
-								state.meta.errors.length > 0
-									? 'border-red-500'
-									: 'border-transparent'
-							"
-						/>
-						<FieldInfo :state="state" />
+						<div class="flex flex-col gap-1">
+							<input
+								:id="field.name"
+								:name="field.name"
+								:value="field.state.value"
+								@input="
+									(e) =>
+										field.handleChange(
+											Number((e.target as HTMLInputElement).value),
+										)
+								"
+								type="number"
+								placeholder="Age"
+								class="p-2 bg-zinc-700 rounded border"
+								:class="
+									state.meta.errors.length > 0
+										? 'border-red-500'
+										: 'border-transparent'
+								"
+							/>
+							<FieldInfo :state="state" />
+						</div>
 					</template>
 				</form.Field>
 
 				<form.Field name="phone" class="flex flex-col gap-1">
 					<template v-slot="{ field, state }">
-						<input
-							:id="field.name"
-							:name="field.name"
-							:value="field.state.value"
-							@input="
-								(e) => field.handleChange((e.target as HTMLInputElement).value)
-							"
-							type="text"
-							placeholder="Phone"
-							class="p-2 bg-zinc-700 rounded border"
-							:class="
-								state.meta.errors.length > 0
-									? 'border-red-500'
-									: 'border-transparent'
-							"
-						/>
-						<FieldInfo :state="state" />
+						<div class="flex flex-col gap-1">
+							<input
+								:id="field.name"
+								:name="field.name"
+								:value="field.state.value"
+								@input="
+									(e) =>
+										field.handleChange((e.target as HTMLInputElement).value)
+								"
+								type="text"
+								placeholder="Phone"
+								class="p-2 bg-zinc-700 rounded border"
+								:class="
+									state.meta.errors.length > 0
+										? 'border-red-500'
+										: 'border-transparent'
+								"
+							/>
+							<FieldInfo :state="state" />
+						</div>
 					</template>
 				</form.Field>
 
 				<form.Field name="address" class="flex flex-col gap-1">
 					<template v-slot="{ field, state }">
-						<input
-							:id="field.name"
-							:name="field.name"
-							:value="field.state.value"
-							@input="
-								(e) => field.handleChange((e.target as HTMLInputElement).value)
-							"
-							type="text"
-							placeholder="Address"
-							class="p-2 bg-zinc-700 rounded border"
-							:class="
-								state.meta.errors.length > 0
-									? 'border-red-500'
-									: 'border-transparent'
-							"
-						/>
-						<FieldInfo :state="state" />
+						<div class="flex flex-col gap-1">
+							<input
+								:id="field.name"
+								:name="field.name"
+								:value="field.state.value"
+								@input="
+									(e) =>
+										field.handleChange((e.target as HTMLInputElement).value)
+								"
+								type="text"
+								placeholder="Address"
+								class="p-2 bg-zinc-700 rounded border"
+								:class="
+									state.meta.errors.length > 0
+										? 'border-red-500'
+										: 'border-transparent'
+								"
+							/>
+							<FieldInfo :state="state" />
+						</div>
 					</template>
 				</form.Field>
 
 				<form.Subscribe>
-					<template v-slot="{ canSubmit, isSubmitting, errorMap }">
+					<template v-slot="{ canSubmit, isSubmitting }">
 						<p
-							v-if="getFormErrorMessage(errorMap.onSubmit)"
+							v-if="formError"
 							class="rounded border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-200"
 						>
-							{{ getFormErrorMessage(errorMap.onSubmit) }}
+							Form submission failed. Please check your inputs.
 						</p>
 						<button
 							type="submit"
