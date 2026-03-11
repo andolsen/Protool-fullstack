@@ -1,6 +1,6 @@
 import auth from "../auth/auth";
 import db from "../db";
-import { usersTable } from "../db/schema/schema";
+import { demoSchema } from "../db/schema/demoSchema";
 
 export type dbCall = {
 	name: string;
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event): Promise<dbCall | null> => {
 
 		await new Promise((resolve) => setTimeout(resolve, 2000));
 
-		const data = await db.select().from(usersTable);
+		const data = await db.select().from(demoSchema);
 
 		return data[0] ?? null;
 	} catch (error) {

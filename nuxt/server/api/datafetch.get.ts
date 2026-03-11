@@ -11,8 +11,7 @@ export type UserData = {
 export default defineEventHandler(async (): Promise<UserData> => {
 	await new Promise((resolve) => setTimeout(resolve, 2000));
 
-	//const data = await db.select().from(usersTable);
-	//console.log(data);
+	// Call db
 
 	return {
 		name: faker.person.fullName(),
