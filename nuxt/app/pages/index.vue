@@ -29,6 +29,7 @@ const user = computed(() => session.value.data?.user);
 		class="absolute bottom-5 left-0 right-0 text-center text-white"
 	>
 		<p>Logged in as {{ user?.name }}</p>
+		<p>Organization ID: {{ user?.organizationId }}</p>
 		<button
 			class="text-white px-3 py-2 rounded-md bg-zinc-700"
 			@click="() => signOut()"

@@ -8,6 +8,15 @@ const auth = betterAuth({
 		provider: "sqlite",
 		schema,
 	}),
+	user: {
+		additionalFields: {
+			organizationId: {
+				type: "string",
+				required: true,
+				input: false,
+			},
+		},
+	},
 	socialProviders: {
 		microsoft: {
 			clientId: process.env.MICROSOFT_CLIENT_ID as string,
@@ -15,6 +24,12 @@ const auth = betterAuth({
 			tenantId: "common",
 			authority: "https://login.microsoftonline.com", // Authentication authority URL
 			prompt: "select_account", // Forces account selection
+			mapProfileToUser: async (profile) => {
+				return {
+					// 'tid' is the standard claim for Tenant ID in Microsoft tokens
+					organizationId: profile.tid,
+				};
+			},
 		},
 	},
 });
