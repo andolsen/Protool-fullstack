@@ -15,6 +15,11 @@ const auth = betterAuth({
 				required: true,
 				input: false,
 			},
+			modules: {
+				type: "string[]",
+				required: true,
+				input: false,
+			},
 		},
 	},
 	socialProviders: {
@@ -26,8 +31,8 @@ const auth = betterAuth({
 			prompt: "select_account", // Forces account selection
 			mapProfileToUser: async (profile) => {
 				return {
-					// 'tid' is the standard claim for Tenant ID in Microsoft tokens
-					organizationId: profile.tid,
+					organizationId: profile.tid, // Tennant ID from microsoft
+					modules: JSON.stringify(["module1", "module2", "module3"]), // This will be a db call instead in the final version
 				};
 			},
 		},
